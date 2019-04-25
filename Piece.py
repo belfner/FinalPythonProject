@@ -16,6 +16,102 @@ I3 = [[None,    1, None, None],
       [None,    1, None, None],
       [None,    1, None, None]]
 
+L = [L0, L1, L2, L3]
+L0 = [[None, None,    1, None],
+      [   1,    1,    1, None],
+      [None, None, None, None],
+      [None, None, None, None]]
+L1 = [[None,    1, None, None],
+      [None,    1, None, None],
+      [None,    1,    1, None],
+      [None, None, None, None]]
+L2 = [[None, None, None, None],
+      [   1,    1,    1, None],
+      [   1, None, None, None],
+      [None, None, None, None]]
+L3 = [[   1,    1, None, None],
+      [None,    1, None, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+
+J = [J0, J1, J2, J3]
+J0 = [[   1, None, None, None],
+      [   1,    1,    1, None],
+      [None, None, None, None],
+      [None, None, None, None]]
+J1 = [[None,    1,    1, None],
+      [None,    1, None, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+J2 = [[None, None, None, None],
+      [   1,    1,    1, None],
+      [None, None,    1, None],
+      [None, None, None, None]]
+J3 = [[None,    1, None, None],
+      [None,    1, None, None],
+      [   1,    1, None, None],
+      [None, None, None, None]]
+
+O = [O0, O0, O0, O0]
+O0 = [[None,    1,    1, None],
+      [None,    1,    1, None],
+      [None, None, None, None],
+      [None, None, None, None]]
+
+S = [S0, S1, S2, S3]
+S0 = [[None,    1,    1, None],
+      [   1,    1, None, None],
+      [None, None, None, None],
+      [None, None, None, None]]
+S1 = [[None,    1, None, None],
+      [None,    1,    1, None],
+      [None, None,    1, None],
+      [None, None, None, None]]
+S2 = [[None, None, None, None],
+      [None,    1,    1, None],
+      [   1,    1, None, None],
+      [None, None, None, None]]
+S3 = [[   1, None, None, None],
+      [   1,    1, None, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+
+T = [T0, T1, T2, T3]
+T0 = [[None,    1, None, None],
+      [   1,    1,    1, None],
+      [None, None, None, None],
+      [None, None, None, None]]
+T1 = [[None,    1, None, None],
+      [None,    1,    1, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+T2 = [[None, None, None, None],
+      [   1,    1,    1, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+T3 = [[None,    1, None, None],
+      [   1,    1, None, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+
+Z = [Z0, Z1, Z2, Z3]
+Z0 = [[   1,    1, None, None],
+      [None,    1,    1, None],
+      [None, None, None, None],
+      [None, None, None, None]]
+Z1 = [[None, None,    1, None],
+      [None,    1,    1, None],
+      [None,    1, None, None],
+      [None, None, None, None]]
+Z2 = [[None, None, None, None],
+      [   1,    1, None, None],
+      [None,    1,    1, None],
+      [None, None, None, None]]
+Z3 = [[None,    1, None, None],
+      [   1,    1, None, None],
+      [   1, None, None, None],
+      [None, None, None, None]]
+
 
 class Piece:
     piece = [[]]
