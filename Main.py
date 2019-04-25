@@ -1,62 +1,36 @@
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
+import pygame
+from pygame.locals import *
 
-fromaddr = "EMAIL address of the sender"
-toaddr = "EMAIL address of the receiver"
+def main():
+    # Initialise screen
+    pygame.init()
+    screen = pygame.display.set_mode((150, 50))
+    pygame.display.set_caption('Basic Pygame program')
 
-# instance of MIMEMultipart
-msg = MIMEMultipart()
+    # Fill background
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((250, 250, 250))
 
-# storing the senders email address
-msg['From'] = fromaddr
+    # Display some text
+    font = pygame.font.Font(None, 36)
+    text = font.render("Hello There", 1, (10, 10, 10))
+    textpos = text.get_rect()
+    textpos.centerx = background.get_rect().centerx
+    background.blit(text, textpos)
 
-# storing the receivers email address
-msg['To'] = toaddr
+    # Blit everything to the screen
+    screen.blit(background, (0, 0))
+    pygame.display.flip()
 
-# storing the subject
-msg['Subject'] = "Subject of the Mail"
+    # Event loop
+    while 1:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                return
 
-# string to store the body of the mail
-body = "Body_of_the_mail"
+        screen.blit(background, (0, 0))
+        pygame.display.flip()
 
-# attach the body with the msg instance
-msg.attach(MIMEText(body, 'plain'))
 
-# open the file to be sent
-filename = "File_name_with_extension"
-attachment = open("Path of the file", "rb")
-
-# instance of MIMEBase and named as p
-p = MIMEBase('application', 'octet-stream')
-
-# To change the payload into encoded form
-p.set_payload((attachment).read())
-
-# encode into base64
-encoders.encode_base64(p)
-
-p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-
-# attach the instance 'p' to instance 'msg'
-msg.attach(p)
-
-# creates SMTP session
-s = smtplib.SMTP('smtp.gmail.com', 587)
-
-# start TLS for security
-s.starttls()
-
-# Authentication
-s.login(fromaddr, "Password_of_the_sender")
-
-# Converts the Multipart msg into a string
-text = msg.as_string()
-
-# sending the mail
-s.sendmail(fromaddr, toaddr, text)
-
-# terminating the session
-s.quit()
+if __name__ == '__main__': main()
