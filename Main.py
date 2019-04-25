@@ -30,7 +30,9 @@ clock = pygame.time.Clock()
 board = Board(width,height)
 
 d = True
-p = Piece(width,height,'I')
+p = Piece(width,height,'I',board)
+for x in range(10):
+    p.moveDown()
 board.addCellsTemp(p)
 while not done:
 
@@ -41,17 +43,20 @@ while not done:
             if event.key == pygame.K_LEFT:
                 p.move(1)
                 board.addCellsTemp(p)
-            elif event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT:
                 p.move(0)
                 board.addCellsTemp(p)
-            elif event.key == pygame.K_DOWN:
+            if event.key  == pygame.K_UP:
+                p.rotate()
+                board.addCellsTemp(p)
+            if event.key == pygame.K_DOWN:
                 if not board.checkIfSet(p):
                     p.moveDown()
                     board.addCellsTemp(p)
                 else:
                     print('Piece is Set')
                     board.addCells(p)
-                    p = Piece(width, height, 'I')
+                    p = Piece(width, height, 'I',board)
                     board.addCellsTemp(p)
     # --- Game logic should go here
 

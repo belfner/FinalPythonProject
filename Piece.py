@@ -1,4 +1,5 @@
 from Cell import Cell
+import pprint
 I0 = [[None, None, None, None],
       [   1,    1,    1,    1],
       [None, None, None, None],
@@ -15,8 +16,8 @@ I3 = [[None,    1, None, None],
       [None,    1, None, None],
       [None,    1, None, None],
       [None,    1, None, None]]
+I = [I0, I1, I2, I3]
 
-L = [L0, L1, L2, L3]
 L0 = [[None, None,    1, None],
       [   1,    1,    1, None],
       [None, None, None, None],
@@ -33,8 +34,8 @@ L3 = [[   1,    1, None, None],
       [None,    1, None, None],
       [None,    1, None, None],
       [None, None, None, None]]
+L = [L0, L1, L2, L3]
 
-J = [J0, J1, J2, J3]
 J0 = [[   1, None, None, None],
       [   1,    1,    1, None],
       [None, None, None, None],
@@ -51,14 +52,14 @@ J3 = [[None,    1, None, None],
       [None,    1, None, None],
       [   1,    1, None, None],
       [None, None, None, None]]
+J = [J0, J1, J2, J3]
 
-O = [O0, O0, O0, O0]
 O0 = [[None,    1,    1, None],
       [None,    1,    1, None],
       [None, None, None, None],
       [None, None, None, None]]
+O = [O0, O0, O0, O0]
 
-S = [S0, S1, S2, S3]
 S0 = [[None,    1,    1, None],
       [   1,    1, None, None],
       [None, None, None, None],
@@ -75,8 +76,8 @@ S3 = [[   1, None, None, None],
       [   1,    1, None, None],
       [None,    1, None, None],
       [None, None, None, None]]
+S = [S0, S1, S2, S3]
 
-T = [T0, T1, T2, T3]
 T0 = [[None,    1, None, None],
       [   1,    1,    1, None],
       [None, None, None, None],
@@ -93,8 +94,8 @@ T3 = [[None,    1, None, None],
       [   1,    1, None, None],
       [None,    1, None, None],
       [None, None, None, None]]
+T = [T0, T1, T2, T3]
 
-Z = [Z0, Z1, Z2, Z3]
 Z0 = [[   1,    1, None, None],
       [None,    1,    1, None],
       [None, None, None, None],
@@ -111,19 +112,22 @@ Z3 = [[None,    1, None, None],
       [   1,    1, None, None],
       [   1, None, None, None],
       [None, None, None, None]]
-
+Z = [Z0, Z1, Z2, Z3]
 
 class Piece:
     piece = [[]]
     color = (255, 255, 255)
-
-    def __init__(self, width, height, shapeName):
+    board = None
+    def __init__(self, width, height, shapeName,board):
+        self.board = board
         self.width = width
         self.height = height
         self.shapeName = shapeName
-        self.piece = [[None for x in range(width)] for y in range(height+3)]
+        self.piece = [[None for x in range(width)] for y in range(height)]
         if shapeName == 'I':
-            self.shape = I1
+            self.positionSet = I
+            self.rotation = 0
+            self.shape = self.positionSet[self.rotation]
             self.posX = int(width/2)-2
             self.posY = 0
             for x in range(4):
@@ -135,38 +139,137 @@ class Piece:
                     self.piece[y+self.posY][x+self.posX] =self.shape[y][x]
 
     def genBoard(self):
-        self.piece = [[None for x in range(self.width)] for y in range(self.height + 3)]
-        if self.shapeName == 'I':
-            for x in range(self.posX,self.posX+4):
-                for y in range(self.posY, self.posY + 4):
-                    if x>=0 and x<self.width:
-                        self.piece[y][x] = self.shape[y-self.posY][x-self.posX]
+        self.piece = [[None for x in range(self.width)] for y in range(self.height)]
+        for x in range(self.posX,self.posX+4):
+            for y in range(self.posY, self.posY + 4):
+                if x>=0 and x<self.width and y< self.height:
+                    self.piece[y][x] = self.shape[y-self.posY][x-self.posX]
 
     def getBoard(self):
-        return self.board[3:]
+        return self.board
 
     def __getitem__(self, key):
-        return self.piece[key+3]
+        return self.piece[key]
 
     def moveDown(self):
         self.posY+=1
         self.genBoard()
 
-    def checkIfOutOfBounds(self):
+    def checkIfOutOfBoundsRight(self):
+        for x in range(4):
+            for y in range(4):
+                if x+self.posX>=self.width and self.shape[y][x]:
+                    return True
+        return False
+
+    def checkIfOutOfBoundsLeft(self):
         for x in range(4):
             for y in range(4):
                 if x+self.posX<0 and self.shape[y][x]:
                     return True
-                elif x+self.posX>=self.width and self.shape[y][x]:
-                    return True
         return False
+
+    def checkIfColisionRight(self):
+        for y in range(4):
+            for x in range(2,4):
+                if x+self.posX >= 0 and x+self.posX < self.width and y+self.posY < self.height:
+                    print(self.board.board[self.posY + y][x + self.posX], end=', ')
+                    if self.board.board[self.posY+y][x+self.posX] and self.shape[y][x]:
+                        return True
+            print()
+        print()
+        return False
+
+    def checkIfColisionLeft(self):
+        for y in range(4):
+            for x in range(0,2):
+
+                if x + self.posX >= 0 and x + self.posX < self.width and y + self.posY < self.height:
+                    print(self.board.board[self.posY + y][x + self.posX], end=', ')
+                    if self.board.board[self.posY+y][x+self.posX] and self.shape[y][x]:
+                        return True
+            print()
+        print()
+        return False
+
+    def rotate(self):
+        self.rotation = (self.rotation+1)%4
+        self.shape = self.positionSet[self.rotation]
+        for x in range(4):
+            for y in range(4):
+                if self.shape[y][x]:
+                    self.shape[y][x] = Cell((255, 255, 255))
+        if self.checkIfOutOfBoundsRight():
+            self.posX -= 1
+            if self.checkIfOutOfBoundsRight():
+                self.posX -= 1
+        elif self.checkIfOutOfBoundsLeft():
+            self.posX += 1
+            if self.checkIfOutOfBoundsLeft():
+                self.posX += 1
+        self.genBoard()
+
+    def checkIfMoveLegal(self):
+        self.genBoard()
+        # pprint.pprint(self.piece)
+        # for x in range(4):
+        #     for y in range(4):
+        #         if self.shape[y][x] and self.board.board[self.posY+y][self.posX+x]:
+        #             return False
+        if self.checkIfOutOfBoundsRight():
+            return 0
+
+        if self.checkIfOutOfBoundsLeft():
+            return 1
+
+        right = self.checkIfColisionRight()
+        left = self.checkIfColisionLeft()
+        if not (not right or not left):
+            return 2
+        self.posX += 1
+        self.genBoard()
+        right = self.checkIfColisionRight()
+        left = self.checkIfColisionLeft()
+        self.posX -= 1
+        if not (not right or not left):
+            return 3
+
+        self.posX -= 1
+        self.genBoard()
+        right = self.checkIfColisionRight()
+        left = self.checkIfColisionLeft()
+        self.posX += 1
+        if not (not right or not left):
+            return 4
+
+        if self.shapeName == 'I' and (self.rotation == 0 or self.rotation == 2):
+            self.posX += 2
+            self.genBoard()
+            right = self.checkIfColisionRight()
+            left = self.checkIfColisionLeft()
+            self.posX -= 2
+            if not (not right or not left):
+                return 5
+
+            self.posX -= 2
+            self.genBoard()
+            right = self.checkIfColisionRight()
+            left = self.checkIfColisionLeft()
+            self.posX += 2
+            if not (not right or not left):
+                return 6
+
+        return 7
+
     def move(self,dir):
         if dir == 0:
             self.posX+=1
-            if self.checkIfOutOfBounds():
+            move = self.checkIfMoveLegal()
+            if move == 0 or move == 4:
                 self.posX -= 1
         else:
             self.posX-=1
-            if self.checkIfOutOfBounds():
+            move = self.checkIfMoveLegal()
+            if move == 1 and move == 3:
                 self.posX += 1
         self.genBoard()

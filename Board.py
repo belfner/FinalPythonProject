@@ -10,13 +10,6 @@ class Board:
         self.board = [[None for x in range(width)] for y in range(height)]
         self.tempBoard = [[None for x in range(width)] for y in range(height)]
 
-    def checkIfMoveLegal(self,piece):
-        for y in range(self.height):
-            for x in range(self.width):
-                if piece[y][x] and self.board[y][x]:
-                    return False
-        return True
-
     def addCells(self,piece):
         for y in range(self.height):
             for x in range(self.width):
