@@ -139,7 +139,8 @@ class Piece:
         if self.shapeName == 'I':
             for x in range(self.posX,self.posX+4):
                 for y in range(self.posY, self.posY + 4):
-                    self.piece[y][x] = self.shape[y-self.posY][x-self.posX]
+                    if x>=0 and x<self.width:
+                        self.piece[y][x] = self.shape[y-self.posY][x-self.posX]
 
     def getBoard(self):
         return self.board[3:]
@@ -151,11 +152,21 @@ class Piece:
         self.posY+=1
         self.genBoard()
 
+    def checkIfOutOfBounds(self):
+        for x in range(4):
+            for y in range(4):
+                if x+self.posX<0 and self.shape[y][x]:
+                    return True
+                elif x+self.posX>=self.width and self.shape[y][x]:
+                    return True
+        return False
     def move(self,dir):
         if dir == 0:
-            if self.posX<self.width-4:
-                self.posX+=1
+            self.posX+=1
+            if self.checkIfOutOfBounds():
+                self.posX -= 1
         else:
-            if self.posX>0:
-                self.posX-=1
+            self.posX-=1
+            if self.checkIfOutOfBounds():
+                self.posX += 1
         self.genBoard()

@@ -1,5 +1,6 @@
 from Cell import Cell
 from copy import deepcopy
+import pprint
 class Board:
     board = [[]]
     tempBoard = [[]]
@@ -26,7 +27,6 @@ class Board:
         self.tempBoard = deepcopy(self.board)
         for y in range(self.height):
             for x in range(self.width):
-                print(x,y,self.tempBoard[y][x])
                 if piece[y][x]:
                     self.tempBoard[y][x] = piece[y][x]
 
@@ -35,10 +35,8 @@ class Board:
             for x in range(self.width):
                 if piece[y][x]:
                     if y == self.height-1:
-                        self.addCells(piece)
                         return True
-                    elif self.board[y-1][x]:
-                        self.addCells(piece)
+                    elif self.board[y+1][x]:
                         return True
         return False
 
