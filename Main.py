@@ -21,7 +21,7 @@ size = (width*40, height*40)
 
 screen = pygame.display.set_mode(size)
 
-pygame.display.set_caption("My Game")
+pygame.display.set_caption("Tetris")
 
 done = False
 
@@ -31,7 +31,7 @@ board = Board(width,height)
 
 d = True
 p = Piece(width,height,'I')
-
+board.addCellsTemp(p)
 while not done:
 
     for event in pygame.event.get():
@@ -51,11 +51,13 @@ while not done:
                 else:
                     print('Piece is Set')
                     board.addCells(p)
+                    p = Piece(width, height, 'I')
+                    board.addCellsTemp(p)
     # --- Game logic should go here
 
     screen.fill(BLACK)
     # --- Drawing code should go here
-    drawBoard(screen,p,width,height)
+    drawBoard(screen,board,width,height)
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
