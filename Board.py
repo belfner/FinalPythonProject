@@ -1,10 +1,13 @@
 from Cell import Cell
+from copy import deepcopy
 class Board:
     board = [[]]
+    tempBoard = [[]]
     def __init__(self,width,height):
         self.width = width
         self.height = height
         self.board = [[None for x in range(width)] for y in range(height)]
+        self.tempBoard = [[None for x in range(width)] for y in range(height)]
 
     def checkIfMoveLegal(self,piece):
         for y in range(self.height):
@@ -19,14 +22,25 @@ class Board:
                 if piece[y][x]:
                     self.board[y][x] = piece[y][x]
 
+    def addCellsTemp(self,piece):
+        self.tempBoard = deepcopy(self.board)
+        for y in range(self.height):
+            for x in range(self.width):
+                print(x,y,self.tempBoard[y][x])
+                if piece[y][x]:
+                    self.tempBoard[y][x] = piece[y][x]
+
     def checkIfSet(self,piece):
         for y in range(self.height):
             for x in range(self.width):
                 if piece[y][x]:
-                    if y == 0:
+                    if y == self.height-1:
                         self.addCells(piece)
                         return True
                     elif self.board[y-1][x]:
                         self.addCells(piece)
                         return True
         return False
+
+    def __getitem__(self, key):
+        return self.tempBoard[key]
