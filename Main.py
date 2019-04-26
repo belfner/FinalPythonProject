@@ -31,8 +31,9 @@ board = Board(width,height)
 
 d = True
 p = Piece(width,height,'I',board)
-for x in range(10):
-    p.moveDown()
+p.genBoard()
+# for x in range(10):
+#     p.moveDown()
 board.addCellsTemp(p)
 while not done:
 
