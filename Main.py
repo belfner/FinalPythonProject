@@ -81,7 +81,6 @@ class Game:
 
             # --- Limit to 60 frames per second
             self.clock.tick(5)
-            print('Frame')
 
         # Close the window and quit.
         pygame.quit()
