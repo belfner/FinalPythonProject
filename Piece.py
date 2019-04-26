@@ -1,5 +1,6 @@
 from Cell import Cell
 import pprint
+import random
 I0 = [[None, None, None, None],
       [   1,    1,    1,    1],
       [None, None, None, None],
@@ -119,6 +120,7 @@ class Piece:
     color = (255, 255, 255)
     board = None
     def __init__(self, width, height, shapeName,board):
+        self.color = (random.randrange(0,256),random.randrange(0,256),random.randrange(0,256))
         self.board = board
         self.width = width
         self.height = height
@@ -133,7 +135,7 @@ class Piece:
             for x in range(4):
                 for y in range(4):
                     if self.shape[y][x]:
-                        self.shape[y][x] = Cell((255,255,255))
+                        self.shape[y][x] = Cell(self.color)
             for y in range(4):
                 for x in range(4):
                     if y+self.posY>0:
@@ -156,6 +158,13 @@ class Piece:
     def moveDown(self):
         self.posY+=1
         self.genBoard()
+
+    def checkIfOutOfBoundsBottom(self):
+        for x in range(4):
+            for y in range(4):
+                    if y+self.posY>=self.height and self.shape[y][x]:
+                        return True
+        return False
 
     def checkIfOutOfBoundsRight(self):
         for x in range(4):
@@ -203,20 +212,23 @@ class Piece:
         for x in range(4):
             for y in range(4):
                 if self.shape[y][x]:
-                    self.shape[y][x] = Cell((255, 255, 255))
+                    self.shape[y][x] = Cell(self.color)
         if not self.checkIfRotateLegal():
             self.rotation = (self.rotation - 1) % 4
             self.shape = self.positionSet[self.rotation]
             for x in range(4):
                 for y in range(4):
                     if self.shape[y][x]:
-                        self.shape[y][x] = Cell((255, 255, 255))
+                        self.shape[y][x] = Cell(self.color)
             self.genBoard()
     #
     def checkIfRotateLegal(self):
         x = self.posX
         longI = self.shapeName == 'I' and (self.rotation == 1 or self.rotation == 3)
         self.genBoard()
+        if self.checkIfOutOfBoundsBottom():
+            return False
+
         # Checks if Rotations moves blocks out of bounds then sees if it is posible to shift right or left to fix
         if self.checkIfOutOfBoundsRight():
             self.posX -= 1
@@ -288,7 +300,11 @@ class Piece:
                 return False
             else:
                 return True
-        return True
+        if self.checkIfColisionAnywhere():
+            self.posX = x
+            return False
+        else:
+            return True
     #     if self.checkIfOutOfBoundsRight():
     #         return 0
     #
