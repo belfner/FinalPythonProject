@@ -31,7 +31,7 @@ clock = pygame.time.Clock()
 board = Board(width,height)
 
 d = True
-p = Piece(width,height,'I',board)
+p = Piece(width,height,'T',board)
 p.genBoard()
 # for x in range(10):
 #     p.moveDown()
@@ -58,7 +58,7 @@ while not done:
                 else:
                     print('Piece is Set')
                     board.addCells(p)
-                    p = Piece(width, height, 'I',board)
+                    p = Piece(width, height, 'T',board)
                     board.addCellsTemp(p)
     # --- Game logic should go here
 
