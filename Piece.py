@@ -126,7 +126,7 @@ class Piece:
         self.height = height
         self.shapeName = shapeName
         self.piece = [[None for x in range(width)] for y in range(height)]
-        if shapeName == 'I':
+        if shapeName == 'T':
             self.positionSet = T
             self.rotation = 0
             self.shape = self.positionSet[self.rotation]
