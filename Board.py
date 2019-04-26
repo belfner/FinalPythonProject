@@ -9,6 +9,7 @@ class Board:
         self.height = height
         self.board = [[None for x in range(width)] for y in range(height)]
         self.tempBoard = [[None for x in range(width)] for y in range(height)]
+        self.score = 0
 
     def addCells(self,piece):
         for y in range(self.height):
@@ -32,6 +33,32 @@ class Board:
                     elif self.board[y+1][x]:
                         return True
         return False
+
+    def shiftBoard(self,shiftFrom):
+        for row in range(len(self.board)):
+            if shiftFrom == row:
+                self.board.pop(shiftFrom)
+                self.board.insert(0, [None for n in range(self.width)])
+                return
+
+    def checkCompleteRows(self):
+        reward = 10
+        row_complete = 1
+        for row in range(self.height):
+            for col in range(self.width):
+                if self.board[row][col] == None:
+                    row_complete = 0
+                    break
+            if row_complete:
+                self.shiftBoard(row)
+                reward *= 2
+            else:
+                row_complete = 1
+
+
+
+
+
 
     def __getitem__(self, key):
         return self.tempBoard[key]

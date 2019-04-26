@@ -3,6 +3,7 @@ from Board import Board
 from Piece import Piece
 width = 10
 height = 20
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -63,6 +64,7 @@ while not done:
 
     screen.fill(BLACK)
     # --- Drawing code should go here
+    board.checkCompleteRows()
     drawBoard(screen,board,width,height)
 
     # --- Go ahead and update the screen with what we've drawn.
