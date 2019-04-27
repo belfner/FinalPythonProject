@@ -38,7 +38,7 @@ class Game:
 
         d = True
         self.pieceSelect = ['T', 'L', 'I', 'J', 'O', 'S', 'Z']
-        self.p = Piece(self.width,self.height,self.pieceSelect[random.randint(0, 6)],self.board)
+        self.p = Piece(self.width,self.height,random.choice(self.pieceSelect),self.board)
         self.p.genBoard()
         # for x in range(10):
         #     p.moveDown()
@@ -47,14 +47,14 @@ class Game:
         self.mainLoop()
 
     def moveDown(self):
-        self.p.moveDown()
         if not self.board.checkIfSet(self.p):
+            self.p.moveDown()
             self.board.addCellsTemp(self.p)
         else:
             print('Piece is Set')
             self.board.addCells(self.p)
             self.board.checkCompleteRows()
-            self.p = Piece(self.width, self.height, self.pieceSelect[random.randint(0, 6)], self.board)
+            self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
             self.board.addCellsTemp(self.p)
     def mainLoop(self):
         while not self.done:
