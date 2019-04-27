@@ -16,11 +16,13 @@ class Game:
             for x in range(self.width):
                 if self.board[y][x]:
                     pygame.draw.rect(self.screen, self.board[y][x].color, (40*x, 40*y, 40, 40))
+                    pygame.draw.rect(self.screen, (66, 79, 159), (self.width*40, 0, self.width*40+200, self.height*40))
+
 
     def __init__(self):
         pygame.init()
 
-        self.size = (self.width*40, self.height*40)
+        self.size = (self.width*40+200, self.height*40)
 
         self.screen = pygame.display.set_mode(self.size)
 
@@ -75,7 +77,7 @@ class Game:
             # --- Drawing code should go here
             self.screen.fill(self.BLACK)
             self.drawBoard(self.screen,self.board,self.width,self.height)
-
+            self.board.drawGUI(self.screen)
             # --- Go ahead and update the screen with what we've drawn.
             pygame.display.flip()
 
