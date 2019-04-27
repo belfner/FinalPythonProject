@@ -1,6 +1,7 @@
 import pygame
 from Board import Board
 from Piece import Piece
+import random
 
 class Game:
     width = 10
@@ -33,7 +34,8 @@ class Game:
         self.board = Board(self.width,self.height)
 
         d = True
-        self.p = Piece(self.width,self.height,'T',self.board)
+        self.pieceSelect = ['T', 'L', 'I', 'J', 'O', 'S', 'Z']
+        self.p = Piece(self.width,self.height,self.pieceSelect[random.randint(0, 6)],self.board)
         self.p.genBoard()
         # for x in range(10):
         #     p.moveDown()
@@ -49,7 +51,7 @@ class Game:
             print('Piece is Set')
             self.board.addCells(self.p)
             self.board.checkCompleteRows()
-            self.p = Piece(self.width, self.height, 'T', self.board)
+            self.p = Piece(self.width, self.height, self.pieceSelect[random.randint(0, 6)], self.board)
             self.board.addCellsTemp(self.p)
     def mainLoop(self):
         while not self.done:

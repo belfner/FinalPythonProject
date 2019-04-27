@@ -1,6 +1,19 @@
 from Cell import Cell
 import pprint
 import random
+
+#               R    G    B
+WHITE       = (255, 255, 255)
+GRAY        = (150, 150, 150)
+BLACK       = (  0,   0,   0)
+RED         = (255,   0,   0)
+GREEN       = (  0, 180,   0)
+BLUE        = (  0,   0, 155)
+YELLOW      = (220, 220,   0)
+BLUE        = (  0,   0, 220)
+PURPLE      = (125,  38, 205)
+ORANGE      = (255,  165,  0)
+
 I0 = [[None, None, None, None],
       [   1,    1,    1,    1],
       [None, None, None, None],
@@ -120,7 +133,6 @@ class Piece:
     color = (255, 255, 255)
     board = None
     def __init__(self, width, height, shapeName,board):
-        self.color = (random.randrange(0,256),random.randrange(0,256),random.randrange(0,256))
         self.board = board
         self.width = width
         self.height = height
@@ -128,18 +140,37 @@ class Piece:
         self.piece = [[None for x in range(width)] for y in range(height)]
         if shapeName == 'T':
             self.positionSet = T
-            self.rotation = 0
-            self.shape = self.positionSet[self.rotation]
-            self.posX = int(width/2)-2
-            self.posY = -3
-            for x in range(4):
-                for y in range(4):
-                    if self.shape[y][x]:
-                        self.shape[y][x] = Cell(self.color)
+            self.color = (RED)
+        if shapeName == 'O':
+            self.positionSet = O
+            self.color = (GREEN)
+        if shapeName == 'J':
+            self.positionSet = J
+            self.color = (BLUE)
+        if shapeName == 'S':
+            self.positionSet = S
+            self.color = (YELLOW)
+        if shapeName == 'Z':
+            self.positionSet = Z
+            self.color = (PURPLE)
+        if shapeName == 'L':
+            self.positionSet = L
+            self.color = (ORANGE)
+        if shapeName == 'I':
+            self.positionSet = I
+            self.color = (GRAY)
+        self.rotation = 0
+        self.shape = self.positionSet[self.rotation]
+        self.posX = int(width/2)-2
+        self.posY = -3
+        for x in range(4):
             for y in range(4):
-                for x in range(4):
-                    if y+self.posY>0:
-                        self.piece[y+self.posY][x+self.posX] =self.shape[y][x]
+                if self.shape[y][x]:
+                    self.shape[y][x] = Cell(self.color)
+        for y in range(4):
+            for x in range(4):
+                if y+self.posY>0:
+                    self.piece[y+self.posY][x+self.posX] =self.shape[y][x]
 
     def genBoard(self):
         self.piece = [[None for x in range(self.width)] for y in range(self.height)]
