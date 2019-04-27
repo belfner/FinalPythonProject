@@ -1,6 +1,7 @@
 from Cell import Cell
 from copy import deepcopy
 import pprint
+import pygame
 class Board:
     board = [[]]
     tempBoard = [[]]
@@ -42,7 +43,7 @@ class Board:
                 return
 
     def checkCompleteRows(self):
-        reward = 10
+        reward = 0
         row_complete = 1
         for row in range(self.height):
             for col in range(self.width):
@@ -51,9 +52,29 @@ class Board:
                     break
             if row_complete:
                 self.shiftBoard(row)
-                reward *= 2
+                if reward == 0:
+                    reward += 10
+                else:
+                    reward *= 2
             else:
                 row_complete = 1
+        if reward:
+            self.score += reward
+
+    def drawGUI(self,screen):
+        basicfont = pygame.font.SysFont(None, 48)
+        gameName = basicfont.render('TETRIS', True, (255, 255, 255), (66, 179, 180))
+        text = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
+        score = basicfont.render(str(self.score), True, (255, 255, 255), (66, 179, 180))
+        screen.blit(gameName, (440, 50))
+        screen.blit(text, (410, 200))
+        screen.blit(score, (520, 200))
+        basicfont = pygame.font.SysFont(None, 24)
+        text = basicfont.render('Made By:', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(text, (410, 250))
+        text = basicfont.render('Jack, Ben, and Nate', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(text, (410, 270))
+
 
 
 
