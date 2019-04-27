@@ -11,6 +11,7 @@ class Board:
         self.board = [[None for x in range(width)] for y in range(height)]
         self.tempBoard = [[None for x in range(width)] for y in range(height)]
         self.score = 0
+        self.level = 1
 
     def addCells(self,piece):
         for y in range(self.height):
@@ -52,22 +53,28 @@ class Board:
                     break
             if row_complete:
                 self.shiftBoard(row)
-                if reward == 0:
-                    reward += 10
-                else:
-                    reward *= 2
+                reward += 1
             else:
                 row_complete = 1
         if reward:
-            self.score += reward
+            if reward == 1:
+                self.score += (1*(self.level+1))
+            elif reward == 2:
+                self.score += (3*(self.level+1))
+            elif reward == 3:
+                self.score += (5*(self.level+1))
+            else:
+                self.score += (8*(self.level+1))
 
     def drawGUI(self,screen):
         basicfont = pygame.font.SysFont(None, 48)
         gameName = basicfont.render('TETRIS', True, (255, 255, 255), (66, 179, 180))
-        text = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
+        scoreText = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
+        levelText = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
         score = basicfont.render(str(self.score), True, (255, 255, 255), (66, 179, 180))
+        level = basicfont.render(str(self.score), True, (255, 255, 255), (66, 179, 180))
         screen.blit(gameName, (440, 50))
-        screen.blit(text, (410, 200))
+        screen.blit(scoreText, (410, 200))
         screen.blit(score, (520, 200))
         basicfont = pygame.font.SysFont(None, 24)
         text = basicfont.render('Made By:', True, (255, 255, 255), (66, 179, 180))
@@ -90,3 +97,17 @@ class Board:
 
     def __getitem__(self, key):
         return self.tempBoard[key]
+
+        # reward = 0
+        # row_complete = True
+        # for row in range(self.height):
+        #     for col in range(self.width):
+        #         if self.board[row][col] == None:
+        #             row_complete = False
+        #             break
+        #     if row_complete:
+        #         self.shiftBoard(row)
+        #         reward+=1
+        #     else:
+        #         row_comwplete = True
+        #

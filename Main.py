@@ -18,13 +18,13 @@ class Game:
             for x in range(self.width):
                 if self.board[y][x]:
                     pygame.draw.rect(self.screen, self.board[y][x].color, (40*x, 40*y, 40, 40))
-                    pygame.draw.rect(self.screen, (66, 79, 159), (self.width*40, 0, self.width*40+200, self.height*40))
+
 
 
     def __init__(self):
         pygame.init()
 
-        self.size = (self.width*40+200, self.height*40)
+        self.size = (self.width*40+400, self.height*40)
 
         self.screen = pygame.display.set_mode(self.size)
 
@@ -45,7 +45,52 @@ class Game:
         self.board.addCellsTemp(self.p)
 
         self.mainLoop()
-
+    def shouldGameTick(self,step):
+        level = self.board.level
+        if level == 1:
+            if step%48 == 0 and step != 0:
+                return True
+        elif level == 1:
+            if step%43 == 0 and step != 0:
+                return True
+        elif level == 2:
+            if step%38 == 0 and step != 0:
+                return True
+        elif level == 3:
+            if step%33 == 0 and step != 0:
+                return True
+        elif level == 4:
+            if step%28 == 0 and step != 0:
+                return True
+        elif level == 5:
+            if step%23 == 0 and step != 0:
+                return True
+        elif level == 6:
+            if step%18 == 0 and step != 0:
+                return True
+        elif level == 7:
+            if step%13 == 0 and step != 0:
+                return True
+        elif level == 8:
+            if step%8 == 0 and step != 0:
+                return True
+        elif level == 9:
+            if step%6 == 0 and step != 0:
+                return True
+        elif level <=12:
+            if step%5 == 0 and step != 0:
+                return True
+        elif level <=15:
+            if step%4 == 0 and step != 0:
+                return True
+        elif level <=18:
+            if step%3 == 0 and step != 0:
+                return True
+        elif level <=28:
+            if step%2 == 0 and step != 0:
+                return True
+        else:
+            return True
     def moveDown(self):
         if not self.board.checkIfSet(self.p):
             self.p.moveDown()
@@ -57,8 +102,8 @@ class Game:
             self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
             self.board.addCellsTemp(self.p)
     def mainLoop(self):
+        steps = 0
         while not self.done:
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -80,20 +125,23 @@ class Game:
                         self.pause = not self.pause
             # --- Game logic should go here
             if not self.pause:
-                self.moveDown()
+                if self.shouldGameTick(steps):
+                    self.moveDown()
             # --- Drawing code should go here
                 self.screen.fill(self.BLACK)
             else:
                 self.screen.fill(self.WHITE)
                 self.board.drawPause(self.screen)
+            pygame.draw.rect(self.screen, (66, 79, 159),
+(self.width * 40, 0, self.width * 40 + 200, self.height * 40))
             self.drawBoard(self.screen,self.board,self.width,self.height)
             self.board.drawGUI(self.screen)
             # --- Go ahead and update the screen with what we've drawn.
             pygame.display.flip()
 
             # --- Limit to 60 frames per second
-            self.clock.tick(4)
-
+            self.clock.tick(60)
+            steps+=1
         # Close the window and quit.
         pygame.quit()
 
