@@ -47,7 +47,7 @@ class Game:
         self.mainLoop()
     def shouldGameTick(self,step):
         level = self.board.level
-        if level == 1:
+        if level == 0 or level == 1:
             if step%48 == 0 and step != 0:
                 return True
         elif level == 1:
@@ -84,7 +84,7 @@ class Game:
             if step%4 == 0 and step != 0:
                 return True
         elif level <=18:
-            if step%3 == 0 and step != 0:
+            if step%3 == 0 and step  != 0:
                 return True
         elif level <=28:
             if step%2 == 0 and step != 0:
@@ -98,13 +98,25 @@ class Game:
         else:
             print('Piece is Set')
             self.board.addCells(self.p)
+            self.done = self.board.checkIfGameOver()
             self.board.checkCompleteRows()
             self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
             self.board.addCellsTemp(self.p)
+    def hardDrop(self):
+        while not self.board.checkIfSet(self.p):
+            self.p.moveDown()
+            self.board.addCellsTemp(self.p)
+        print('Piece is Set')
+        self.board.addCells(self.p)
+        self.done = self.board.checkIfGameOver()
+        self.board.checkCompleteRows()
+        self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+        self.board.addCellsTemp(self.p)
     def mainLoop(self):
         steps = 0
-        while not self.done:
 
+        while not self.done:
+            hardDrop = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.done = True
@@ -121,11 +133,14 @@ class Game:
                             self.board.addCellsTemp(self.p)
                         if event.key == pygame.K_DOWN:
                             self.moveDown()
+                        if event.key == pygame.K_SPACE:
+                            self.hardDrop()
+                            hardDrop = True
                     if event.key == pygame.K_ESCAPE:
                         self.pause = not self.pause
             # --- Game logic should go here
             if not self.pause:
-                if self.shouldGameTick(steps):
+                if self.shouldGameTick(steps) and not hardDrop:
                     self.moveDown()
             # --- Drawing code should go here
                 self.screen.fill(self.BLACK)

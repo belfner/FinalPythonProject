@@ -139,30 +139,36 @@ class Piece:
         self.shapeName = shapeName
         self.piece = [[None for x in range(width)] for y in range(height)]
         if shapeName == 'T':
+            self.posY = -2
             self.positionSet = T
             self.color = (RED)
         if shapeName == 'O':
+            self.posY = -2
             self.positionSet = O
             self.color = (GREEN)
         if shapeName == 'J':
+            self.posY = -2
             self.positionSet = J
             self.color = (BLUE)
         if shapeName == 'S':
+            self.posY = -2
             self.positionSet = S
             self.color = (YELLOW)
         if shapeName == 'Z':
+            self.posY = -2
             self.positionSet = Z
             self.color = (PURPLE)
         if shapeName == 'L':
+            self.posY = -2
             self.positionSet = L
             self.color = (ORANGE)
         if shapeName == 'I':
+            self.posY = -4
             self.positionSet = I
             self.color = (GRAY)
         self.rotation = 0
         self.shape = self.positionSet[self.rotation]
         self.posX = int(width/2)-2
-        self.posY = -3
         for x in range(4):
             for y in range(4):
                 if self.shape[y][x]:
@@ -216,7 +222,7 @@ class Piece:
     def checkIfColisionAnywhere(self):
         for y in range(4):
             for x in range(0,4):
-                if x+self.posX >= 0 and x+self.posX < self.width and y+self.posY < self.height and  y>=0:
+                if x+self.posX >= 0 and x+self.posX < self.width and y+self.posY < self.height and  self.posY+y>=0:
                     if self.board.board[self.posY+y][x+self.posX] and self.shape[y][x]:
                         return True
         return False
@@ -224,7 +230,7 @@ class Piece:
     def checkIfColisionRight(self):
         for y in range(4):
             for x in range(3,4):
-                if x+self.posX >= 0 and x+self.posX < self.width and y+self.posY < self.height and  y>=0:
+                if x+self.posX >= 0 and x+self.posX < self.width and y+self.posY < self.height and  self.posY+y>=0:
                     if self.board.board[self.posY+y][x+self.posX] and self.shape[y][x]:
                         return True
         return False
@@ -232,7 +238,7 @@ class Piece:
     def checkIfColisionLeft(self):
         for y in range(4):
             for x in range(0,2):
-                if x + self.posX >= 0 and x + self.posX < self.width and y + self.posY < self.height and  y>=0:
+                if x + self.posX >= 0 and x + self.posX < self.width and y + self.posY < self.height and  self.posY+y>=0:
                     if self.board.board[self.posY+y][x+self.posX] and self.shape[y][x]:
                         return True
         return False

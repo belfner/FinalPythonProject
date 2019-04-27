@@ -11,7 +11,8 @@ class Board:
         self.board = [[None for x in range(width)] for y in range(height)]
         self.tempBoard = [[None for x in range(width)] for y in range(height)]
         self.score = 0
-        self.level = 1
+        self.level = 10
+        self.lineclears =9
 
     def addCells(self,piece):
         for y in range(self.height):
@@ -42,7 +43,12 @@ class Board:
                 self.board.pop(shiftFrom)
                 self.board.insert(0, [None for n in range(self.width)])
                 return
-
+    def checkIfGameOver(self):
+        for col in range(self.width):
+            if self.board[0][col] != None:
+                row_complete = 0
+                return True
+        return False
     def checkCompleteRows(self):
         reward = 0
         row_complete = 1
@@ -57,6 +63,7 @@ class Board:
             else:
                 row_complete = 1
         if reward:
+
             if reward == 1:
                 self.score += (1*(self.level+1))
             elif reward == 2:
@@ -65,17 +72,22 @@ class Board:
                 self.score += (5*(self.level+1))
             else:
                 self.score += (8*(self.level+1))
+            self.lineclears += reward
+            self.level = int(self.lineclears/10)
 
     def drawGUI(self,screen):
         basicfont = pygame.font.SysFont(None, 48)
         gameName = basicfont.render('TETRIS', True, (255, 255, 255), (66, 179, 180))
         scoreText = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
-        levelText = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
+        levelText = basicfont.render('Level:', True, (255, 255, 255), (66, 179, 180))
         score = basicfont.render(str(self.score), True, (255, 255, 255), (66, 179, 180))
-        level = basicfont.render(str(self.score), True, (255, 255, 255), (66, 179, 180))
+        level = basicfont.render(str(self.level), True, (255, 255, 255), (66, 179, 180))
         screen.blit(gameName, (440, 50))
+        screen.blit(levelText, (410, 160))
+        screen.blit(level, (520, 160))
         screen.blit(scoreText, (410, 200))
         screen.blit(score, (520, 200))
+
         basicfont = pygame.font.SysFont(None, 24)
         text = basicfont.render('Made By:', True, (255, 255, 255), (66, 179, 180))
         screen.blit(text, (410, 250))
