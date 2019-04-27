@@ -75,6 +75,13 @@ class Board:
         text = basicfont.render('Jack, Ben, and Nate', True, (255, 255, 255), (66, 179, 180))
         screen.blit(text, (410, 270))
 
+    def drawPause(selfself,screen):
+        basicfont = pygame.font.SysFont(None, 64)
+        paused = basicfont.render('PAUSED', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(paused, (110, 200))
+        basicfont = pygame.font.SysFont(None, 48)
+        instructions = basicfont.render('Press esc to resume', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(instructions, (40, 250))
 
 
 

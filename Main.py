@@ -6,6 +6,7 @@ import random
 class Game:
     width = 10
     height = 20
+    pause = False
 
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
@@ -63,28 +64,35 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.done = True
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        self.p.move(1)
-                        self.board.addCellsTemp(self.p)
-                    if event.key == pygame.K_RIGHT:
-                        self.p.move(0)
-                        self.board.addCellsTemp(self.p)
-                    if event.key  == pygame.K_UP:
-                        self.p.rotate()
-                        self.board.addCellsTemp(self.p)
-                    if event.key == pygame.K_DOWN:
-                        self.moveDown()
+                    if not self.pause:
+                        if event.key == pygame.K_LEFT:
+                            self.p.move(1)
+                            self.board.addCellsTemp(self.p)
+                        if event.key == pygame.K_RIGHT:
+                            self.p.move(0)
+                            self.board.addCellsTemp(self.p)
+                        if event.key  == pygame.K_UP:
+                            self.p.rotate()
+                            self.board.addCellsTemp(self.p)
+                        if event.key == pygame.K_DOWN:
+                            self.moveDown()
+                    if event.key == pygame.K_ESCAPE:
+                        self.pause = not self.pause
             # --- Game logic should go here
-            self.moveDown()
+            if not self.pause:
+                self.moveDown()
             # --- Drawing code should go here
-            self.screen.fill(self.BLACK)
+                self.screen.fill(self.BLACK)
+            else:
+                self.screen.fill(self.WHITE)
+                self.board.drawPause(self.screen)
             self.drawBoard(self.screen,self.board,self.width,self.height)
             self.board.drawGUI(self.screen)
             # --- Go ahead and update the screen with what we've drawn.
             pygame.display.flip()
 
             # --- Limit to 60 frames per second
-            self.clock.tick(5)
+            self.clock.tick(4)
 
         # Close the window and quit.
         pygame.quit()
