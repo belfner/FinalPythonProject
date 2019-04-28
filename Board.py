@@ -65,13 +65,13 @@ class Board:
         if reward:
 
             if reward == 1:
-                self.score += (1*(self.level+1))
+                self.score += (100*(self.level+1))
             elif reward == 2:
-                self.score += (3*(self.level+1))
+                self.score += (300*(self.level+1))
             elif reward == 3:
-                self.score += (5*(self.level+1))
+                self.score += (500*(self.level+1))
             else:
-                self.score += (8*(self.level+1))
+                self.score += (800*(self.level+1))
             self.lineclears += reward
             self.level = int(self.lineclears/10)
 
