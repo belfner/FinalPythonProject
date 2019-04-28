@@ -98,9 +98,8 @@ class Game:
             self.p.moveDown()
             self.board.addCellsTemp(self.p)
         else:
-            print('Piece is Set')
             self.board.addCells(self.p)
-            self.done = self.board.checkIfGameOver()
+            self.gameover = self.board.checkIfGameOver()
             self.board.checkCompleteRows()
             self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
             self.board.addCellsTemp(self.p)
@@ -108,7 +107,6 @@ class Game:
         while not self.board.checkIfSet(self.p):
             self.p.moveDown()
             self.board.addCellsTemp(self.p)
-        print('Piece is Set')
         self.board.addCells(self.p)
         self.gameover = self.board.checkIfGameOver()
         if self.gameover:

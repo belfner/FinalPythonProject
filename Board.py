@@ -11,8 +11,8 @@ class Board:
         self.board = [[None for x in range(width)] for y in range(height)]
         self.tempBoard = [[None for x in range(width)] for y in range(height)]
         self.score = 0
-        self.level = 1
-        self.lineclears = 10
+        self.level = 0
+        self.lineclears = 0
 
     def addCells(self,piece):
         for y in range(self.height):
@@ -105,10 +105,10 @@ class Board:
     def drawGameover(selfself,screen):
         basicfont = pygame.font.SysFont(None, 64)
         paused = basicfont.render('GAME OVER', True, (255, 255, 255), (66, 179, 180))
-        screen.blit(paused, (110, 200))
+        screen.blit(paused, (62, 200))
         basicfont = pygame.font.SysFont(None, 48)
         instructions = basicfont.render('Press R to restart', True, (255, 255, 255), (66, 179, 180))
-        screen.blit(instructions, (57, 250))
+        screen.blit(instructions, (60, 250))
 
 
 
