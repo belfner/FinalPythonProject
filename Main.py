@@ -30,21 +30,23 @@ class Game:
 
         pygame.display.set_caption("Tetris")
 
-        self.done = False
-
         self.clock = pygame.time.Clock()
 
-        self.board = Board(self.width,self.height)
+        self.continueGame = True
+
+    def setUpBoard(self):
+        self.gameover = False
+        self.board = Board(self.width, self.height)
 
         d = True
         self.pieceSelect = ['T', 'L', 'I', 'J', 'O', 'S', 'Z']
-        self.p = Piece(self.width,self.height,random.choice(self.pieceSelect),self.board)
+        self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
         self.p.genBoard()
         # for x in range(10):
         #     p.moveDown()
         self.board.addCellsTemp(self.p)
+        self.done = False
 
-        self.mainLoop()
     def shouldGameTick(self,step):
         level = self.board.level
         if level == 0 or level == 1:
@@ -108,11 +110,21 @@ class Game:
             self.board.addCellsTemp(self.p)
         print('Piece is Set')
         self.board.addCells(self.p)
-        self.done = self.board.checkIfGameOver()
+        self.gameover = self.board.checkIfGameOver()
+        if self.gameover:
+            x = 1
         self.board.checkCompleteRows()
         self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
         self.board.addCellsTemp(self.p)
+
+
     def mainLoop(self):
+        while self.continueGame:
+            self.setUpBoard()
+            self.gameLoop()
+        # Close the window and quit.
+        pygame.quit()
+    def gameLoop(self):
         steps = 0
 
         while not self.done:
@@ -120,8 +132,14 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.done = True
+                    self.continueGame = False
                 elif event.type == pygame.KEYDOWN:
-                    if not self.pause:
+                    if event.key == pygame.K_ESCAPE:
+                        self.done = True
+                        self.continueGame = False
+                    if event.key == pygame.K_r:
+                        self.done = True
+                    if not self.pause and not self.gameover:
                         if event.key == pygame.K_LEFT:
                             self.p.move(1)
                             self.board.addCellsTemp(self.p)
@@ -136,29 +154,36 @@ class Game:
                         if event.key == pygame.K_SPACE:
                             self.hardDrop()
                             hardDrop = True
-                    if event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_p:
                         self.pause = not self.pause
             # --- Game logic should go here
-            if not self.pause:
+            if not self.pause and not self.gameover:
                 if self.shouldGameTick(steps) and not hardDrop:
                     self.moveDown()
             # --- Drawing code should go here
+            if not self.pause:
                 self.screen.fill(self.BLACK)
             else:
                 self.screen.fill(self.WHITE)
-                self.board.drawPause(self.screen)
+
+
+
             pygame.draw.rect(self.screen, (66, 79, 159),
 (self.width * 40, 0, self.width * 40 + 200, self.height * 40))
             self.drawBoard(self.screen,self.board,self.width,self.height)
             self.board.drawGUI(self.screen)
+            if self.pause:
+                self.board.drawPause(self.screen)
+            elif self.gameover:
+                self.board.drawGameover(self.screen)
             # --- Go ahead and update the screen with what we've drawn.
             pygame.display.flip()
 
             # --- Limit to 60 frames per second
             self.clock.tick(60)
             steps+=1
-        # Close the window and quit.
-        pygame.quit()
+
+
 
 
 if __name__ == '__main__':
