@@ -7,11 +7,13 @@ class Game:
     width = 10
     height = 20
     pause = False
+    start = True
 
-    BLACK = (0, 0, 0)
+    BLACK = (  0,   0,   0)
     WHITE = (255, 255, 255)
-    GREEN = (0, 255, 0)
-    RED = (255, 0, 0)
+    GRAY  = (190, 190, 190)
+    GREEN = (  0, 255,   0)
+    RED   = (255,   0,   0)
 
     def drawBoard(self,screen,board,width,height):
         for y in range(self.height):
@@ -34,6 +36,7 @@ class Game:
 
         self.continueGame = True
 
+
         self.steps = 0
 
     def setUpBoard(self):
@@ -50,6 +53,9 @@ class Game:
         #     p.moveDown()
         self.board.addCellsTemp(self.p)
         self.done = False
+
+        self.pNext = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+        self.pNext.genBoard()
 
     def shouldGameTick(self,step):
         level = self.board.level
@@ -152,7 +158,7 @@ class Game:
                         self.continueGame = False
                     if event.key == pygame.K_r:
                         self.done = True
-                    if not self.pause and not self.gameover:
+                    if not (self.pause or self.gameover or self.start):
                         if event.key == pygame.K_LEFT:
                             self.p.move(1)
                             self.board.addCellsTemp(self.p)
@@ -169,22 +175,30 @@ class Game:
                             hardDrop = True
                     if event.key == pygame.K_p:
                         self.pause = not self.pause
+                    if event.key == pygame.K_SPACE:
+                        self.start = False
             # --- Game logic should go here
-            if not self.pause and not self.gameover:
+            if not (self.pause or self.gameover or self.start):
                 if self.shouldGameTick(self.steps) and not hardDrop:
                     self.moveDown()
             # --- Drawing code should go here
-            if not self.pause:
-                self.screen.fill(self.BLACK)
-            else:
+            if self.pause:
                 self.screen.fill(self.WHITE)
+            elif self.start:
+                self.screen.fill(self.GRAY)
+            else:
+                self.screen.fill(self.BLACK)
 
 
 
             pygame.draw.rect(self.screen, (66, 79, 159),
 (self.width * 40, 0, self.width * 40 + 200, self.height * 40))
             self.drawBoard(self.screen,self.board,self.width,self.height)
-            self.board.drawGUI(self.screen,self.pNext)
+            self.board.drawGUI(self.screen, self.pNext)
+            if self.start:
+                self.board.drawTitle(self.screen)
+            elif self.pause:
+                self.board.drawGUI(self.screen,self.pNext)
             if self.pause:
                 self.board.drawPause(self.screen)
             elif self.gameover:

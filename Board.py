@@ -77,12 +77,10 @@ class Board:
 
     def drawGUI(self,screen,piece):
         basicfont = pygame.font.SysFont(None, 48)
-        gameName = basicfont.render('TETRIS', True, (255, 255, 255), (66, 179, 180))
         scoreText = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
         levelText = basicfont.render('Level:', True, (255, 255, 255), (66, 179, 180))
         score = basicfont.render(str(self.score), True, (255, 255, 255), (66, 179, 180))
         level = basicfont.render(str(self.level), True, (255, 255, 255), (66, 179, 180))
-        screen.blit(gameName, (440, 50))
         screen.blit(levelText, (410, 160))
         screen.blit(level, (520, 160))
         screen.blit(scoreText, (410, 200))
@@ -109,6 +107,33 @@ class Board:
         instructions = basicfont.render('Press P to resume', True, (255, 255, 255), (66, 179, 180))
         screen.blit(instructions, (57, 250))
 
+    def drawTitle(selfself,screen):
+        basicfont = pygame.font.SysFont(None, 64)
+        welcome = basicfont.render('Welcome to', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(welcome, (70, 100))
+        basicfont = pygame.font.SysFont(None, 120)
+        title = basicfont.render('Tetris', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(title, (80, 150))
+
+        basicfont = pygame.font.SysFont(None, 42)
+        space = basicfont.render('Press spacebar to begin', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(space, (20, 350))
+        basicfont = pygame.font.SysFont(None, 42)
+        pause = basicfont.render('Press P to pause', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(pause, (20, 390))
+        basicfont = pygame.font.SysFont(None, 42)
+        rotate = basicfont.render('Controls:', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(rotate, (20, 460))
+        basicfont = pygame.font.SysFont(None, 42)
+        arrow = basicfont.render('Use arrow keys to move', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(arrow, (20, 500))
+        basicfont = pygame.font.SysFont(None, 42)
+        up = basicfont.render('Press up to rotate', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(up, (20, 540))
+        basicfont = pygame.font.SysFont(None, 42)
+        up = basicfont.render('Press space to drop', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(up, (20, 580))
+
     def drawGameover(selfself,screen):
         basicfont = pygame.font.SysFont(None, 64)
         paused = basicfont.render('GAME OVER', True, (255, 255, 255), (66, 179, 180))
@@ -116,6 +141,8 @@ class Board:
         basicfont = pygame.font.SysFont(None, 48)
         instructions = basicfont.render('Press R to restart', True, (255, 255, 255), (66, 179, 180))
         screen.blit(instructions, (60, 250))
+
+
 
 
 
