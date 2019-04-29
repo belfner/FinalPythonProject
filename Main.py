@@ -34,6 +34,8 @@ class Game:
 
         self.continueGame = True
 
+        self.steps = 0
+
     def setUpBoard(self):
         self.gameover = False
         self.board = Board(self.width, self.height)
@@ -42,6 +44,8 @@ class Game:
         self.pieceSelect = ['T', 'L', 'I', 'J', 'O', 'S', 'Z']
         self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
         self.p.genBoard()
+        self.pNext = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+        self.pNext.genBoard()
         # for x in range(10):
         #     p.moveDown()
         self.board.addCellsTemp(self.p)
@@ -98,11 +102,17 @@ class Game:
             self.p.moveDown()
             self.board.addCellsTemp(self.p)
         else:
+
             self.board.addCells(self.p)
             self.gameover = self.board.checkIfGameOver()
             self.board.checkCompleteRows()
-            self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+            self.p = self.pNext
+            self.pNext = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+            self.pNext.genBoard()
             self.board.addCellsTemp(self.p)
+            while not self.shouldGameTick(self.steps):
+                self.steps += 1
+            self.steps += 1
     def hardDrop(self):
         while not self.board.checkIfSet(self.p):
             self.p.moveDown()
@@ -112,8 +122,13 @@ class Game:
         if self.gameover:
             x = 1
         self.board.checkCompleteRows()
-        self.p = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+        self.p = self.pNext
+        self.pNext = Piece(self.width, self.height, random.choice(self.pieceSelect), self.board)
+        self.pNext.genBoard()
         self.board.addCellsTemp(self.p)
+        while not self.shouldGameTick(self.steps):
+            self.steps += 1
+        self.steps += 1
 
 
     def mainLoop(self):
@@ -123,7 +138,7 @@ class Game:
         # Close the window and quit.
         pygame.quit()
     def gameLoop(self):
-        steps = 0
+        self.steps = 0
 
         while not self.done:
             hardDrop = False
@@ -156,7 +171,7 @@ class Game:
                         self.pause = not self.pause
             # --- Game logic should go here
             if not self.pause and not self.gameover:
-                if self.shouldGameTick(steps) and not hardDrop:
+                if self.shouldGameTick(self.steps) and not hardDrop:
                     self.moveDown()
             # --- Drawing code should go here
             if not self.pause:
@@ -169,7 +184,7 @@ class Game:
             pygame.draw.rect(self.screen, (66, 79, 159),
 (self.width * 40, 0, self.width * 40 + 200, self.height * 40))
             self.drawBoard(self.screen,self.board,self.width,self.height)
-            self.board.drawGUI(self.screen)
+            self.board.drawGUI(self.screen,self.pNext)
             if self.pause:
                 self.board.drawPause(self.screen)
             elif self.gameover:
@@ -179,7 +194,7 @@ class Game:
 
             # --- Limit to 60 frames per second
             self.clock.tick(60)
-            steps+=1
+            self.steps+=1
 
 
 

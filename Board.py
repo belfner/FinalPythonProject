@@ -75,7 +75,7 @@ class Board:
             self.lineclears += reward
             self.level = int(self.lineclears/10)
 
-    def drawGUI(self,screen):
+    def drawGUI(self,screen,piece):
         basicfont = pygame.font.SysFont(None, 48)
         gameName = basicfont.render('TETRIS', True, (255, 255, 255), (66, 179, 180))
         scoreText = basicfont.render('Score:', True, (255, 255, 255), (66, 179, 180))
@@ -87,12 +87,19 @@ class Board:
         screen.blit(level, (520, 160))
         screen.blit(scoreText, (410, 200))
         screen.blit(score, (520, 200))
+        text = basicfont.render('Next Piece', True, (255, 255, 255), (66, 179, 180))
+        screen.blit(text, (410, 350))
+
+        for y in range(4):
+            for x in range(4):
+                if piece.getShape()[y][x]:
+                    pygame.draw.rect(screen, piece.getShape()[y][x].color, (40*x+410, 40*y+400, 40, 40))
 
         basicfont = pygame.font.SysFont(None, 24)
         text = basicfont.render('Made By:', True, (255, 255, 255), (66, 179, 180))
-        screen.blit(text, (410, 250))
+        screen.blit(text, (410, 760))
         text = basicfont.render('Jack, Ben, and Nate', True, (255, 255, 255), (66, 179, 180))
-        screen.blit(text, (410, 270))
+        screen.blit(text, (410, 780))
 
     def drawPause(selfself,screen):
         basicfont = pygame.font.SysFont(None, 64)

@@ -189,6 +189,9 @@ class Piece:
     def getBoard(self):
         return self.board
 
+    def getShape(self):
+        return self.shape
+
     def __getitem__(self, key):
         return self.piece[key]
 
